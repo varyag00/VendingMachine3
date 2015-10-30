@@ -1,0 +1,5 @@
+configure("Coke", "water", "stuff"; 250, 250, 205) // This SHOULD cause an error, but DOES NOT!
+construct(5, 10, 25, 100; 3; 10; 10; 10)
+load(1, 1, 2, 0; 1, 1, 1)
+unload()
+CHECK_TEARDOWN(65; 0; "Coke", "water", "stuff") // This causes an error for the dummy but should not

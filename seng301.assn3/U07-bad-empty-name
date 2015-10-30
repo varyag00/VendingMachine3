@@ -1,0 +1,2 @@
+construct(1; 1; 10; 10; 10)
+configure(""; 1)

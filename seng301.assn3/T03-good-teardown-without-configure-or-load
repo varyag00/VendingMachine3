@@ -1,0 +1,5 @@
+construct(5, 10, 25, 100; 3; 10; 10; 10)
+extract()
+CHECK_DELIVERY(0)
+unload()
+CHECK_TEARDOWN(0; 0)

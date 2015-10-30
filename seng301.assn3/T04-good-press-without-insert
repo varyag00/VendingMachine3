@@ -1,0 +1,8 @@
+construct(5, 10, 25, 100; 3; 10; 10; 10)
+configure("Coke", "water", "stuff"; 250, 250, 205)
+load(1, 1, 2, 0; 1, 1, 1)
+press(0)
+extract()
+CHECK_DELIVERY(0)
+unload()
+CHECK_TEARDOWN(65; 0; "Coke", "water", "stuff")
