@@ -719,6 +719,7 @@ public class Tests {
 	
 	@Test
 	public void T07() throws DisabledException {
+		
 //		construct(5, 10, 25, 100; 3; 10; 10; 10)
 		constructCoinArgs.clear();
 		constructCoinArgs.add(5);
@@ -732,7 +733,7 @@ public class Tests {
 		receptCap = 10;
 		
 		construct(constructCoinArgs, selButtCount, coinRackCap, popCanRackCap, receptCap);
-
+		
 //		configure("A", "B", "C"; 5, 10, 25)
 		configPopNamesArgs.clear();
 		configPopCostArgs.clear();
@@ -772,7 +773,7 @@ public class Tests {
 		configPopCostArgs.add(205);
 		
 		configure(configPopNamesArgs, configPopCostArgs);
-
+		
 //		press(0)
 		press(0);
 		
@@ -802,10 +803,11 @@ public class Tests {
 
 //		extract()
 		extractObjOutput = extract(); 		
-		
+
 //		CHECK_DELIVERY(50, "A")
 		extractExpectedStringOutput.clear();
-		extractExpectedChangeValue = 50; 				
+		extractActualStringOutput.clear();
+		extractExpectedChangeValue = 50; 	
 		extractExpectedStringOutput.add("A");
 		extractTestHelper();	
 		
@@ -825,20 +827,24 @@ public class Tests {
 		//check if the sum of the unused change is correct
 		assertEquals(expectedChangeSum, actualChangeSum);
 		
+
 		expectedPaymentCoinsInStorageBin = 0;
 		unloadPaymentCoinsInStorageBinHelper();
 
 		//check if the sum of the Coins in the storagebin is correct
 		assertEquals(expectedPaymentCoinsInStorageBin, actualPaymentCoinsInStorageBin);
-
+		
+		
 		//checking List<List<PopCan>> unsoldPopCans 					
 		expectedUnsoldPopCans.clear();
+		actualUnsoldPopCans.clear();
 		expectedUnsoldPopCans.add("B");
 		expectedUnsoldPopCans.add("C");
 		unloadUnsoldPopCansHelper();
 		
 		//check if the unsold PopCans is correct
 		assertArrayEquals(expectedUnsoldPopCans.toArray(), actualUnsoldPopCans.toArray());
+		
 		
 //		load(1, 1, 2, 0; 1, 1, 1)
 		loadCoinCounts.clear();
@@ -865,12 +871,14 @@ public class Tests {
 		
 //		press(0)
 		press(0);
-		
+
 //		extract()
 		extractObjOutput = extract(); 		
 
 //		CHECK_DELIVERY(50, "Coke")
-		extractExpectedChangeValue = 50; 				
+		extractExpectedStringOutput.clear();
+		extractActualStringOutput.clear();
+		extractExpectedChangeValue = 50; 	
 		extractExpectedStringOutput.add("Coke");
 		extractTestHelper();	
 		
@@ -882,6 +890,7 @@ public class Tests {
 //		unload()
 		vmsc = unload();
 
+		
 //		CHECK_TEARDOWN(315; 0; "water", "stuff")
 		//checking List<List<Coin>> unusedCoinsForChange 
 		expectedChangeSum = 315;
@@ -890,14 +899,17 @@ public class Tests {
 		//check if the sum of the unused change is correct
 		assertEquals(expectedChangeSum, actualChangeSum);
 		
-		
+
 		expectedPaymentCoinsInStorageBin = 0;
 		unloadPaymentCoinsInStorageBinHelper();
 
 		//check if the sum of the Coins in the storagebin is correct
 		assertEquals(expectedPaymentCoinsInStorageBin, actualPaymentCoinsInStorageBin);
-
+		
+		
 		//checking List<List<PopCan>> unsoldPopCans 					
+		expectedUnsoldPopCans.clear();
+		actualUnsoldPopCans.clear();
 		expectedUnsoldPopCans.add("water");
 		expectedUnsoldPopCans.add("stuff");
 		unloadUnsoldPopCansHelper();
@@ -910,19 +922,277 @@ public class Tests {
 	@Test
 	public void T08() throws DisabledException {
 		
+//		construct(5, 10, 25, 100; 1; 10; 10; 10)
+		constructCoinArgs.clear();
+		constructCoinArgs.add(5);
+		constructCoinArgs.add(10);
+		constructCoinArgs.add(25);
+		constructCoinArgs.add(100);
 		
+		selButtCount = 1;
+		coinRackCap = 10;
+		popCanRackCap = 10;
+		receptCap = 10;
+		
+		construct(constructCoinArgs, selButtCount, coinRackCap, popCanRackCap, receptCap);
+
+//		configure("stuff"; 140)
+		configPopNamesArgs.clear();
+		configPopCostArgs.clear();
+		configPopNamesArgs.add("stuff");
+		
+		configPopCostArgs.add(140);
+		
+		configure(configPopNamesArgs, configPopCostArgs);
+		
+//		load(0, 5, 1, 1; 1)
+		loadCoinCounts.clear();
+		loadPopCounts.clear();
+		loadCoinCounts.add(0);
+		loadCoinCounts.add(5);
+		loadCoinCounts.add(1);
+		loadCoinCounts.add(1);
+		
+		loadPopCounts.add(1);
+		
+		load(loadCoinCounts, loadPopCounts);
+		
+//		insert(100)
+		insert(100);
+		
+//		insert(100)
+		insert(100);
+		
+//		insert(100)
+		insert(100);
+		
+//		press(0)
+		press(0);
+		
+//		extract()
+		extractObjOutput = extract(); 		
+
+//		CHECK_DELIVERY(155, "stuff")
+		extractExpectedStringOutput.clear();
+		extractActualStringOutput.clear();
+		extractExpectedChangeValue = 155; 	
+		extractExpectedStringOutput.add("stuff");
+		extractTestHelper();	
+		
+		//check if change value is correct
+		assertEquals(extractExpectedChangeValue, extractActualChangeValue);
+		//check if pop names are correct
+		assertArrayEquals(extractExpectedStringOutput.toArray(), extractActualStringOutput.toArray());
+		
+//		unload()
+		vmsc = unload();
+
+//		CHECK_TEARDOWN(320; 0)
+		//checking List<List<Coin>> unusedCoinsForChange 
+		expectedChangeSum = 320;
+		unloadUnusedCoinsHelper();
+		
+		//check if the sum of the unused change is correct
+		assertEquals(expectedChangeSum, actualChangeSum);
+		
+
+		expectedPaymentCoinsInStorageBin = 0;
+		unloadPaymentCoinsInStorageBinHelper();
+
+		//check if the sum of the Coins in the storagebin is correct
+		assertEquals(expectedPaymentCoinsInStorageBin, actualPaymentCoinsInStorageBin);
+		
+		
+		//checking List<List<PopCan>> unsoldPopCans 					
+		expectedUnsoldPopCans.clear();
+		actualUnsoldPopCans.clear();
+		unloadUnsoldPopCansHelper();
+		
+		//check if the unsold PopCans is correct
+		assertArrayEquals(expectedUnsoldPopCans.toArray(), actualUnsoldPopCans.toArray());
 	}
 	
 	@Test
 	public void T09() throws DisabledException {
 		
+//		construct(5, 10, 25, 100; 1; 10; 10; 10)
+		constructCoinArgs.clear();
+		constructCoinArgs.add(5);
+		constructCoinArgs.add(10);
+		constructCoinArgs.add(25);
+		constructCoinArgs.add(100);
 		
+		selButtCount = 1;
+		coinRackCap = 10;
+		popCanRackCap = 10;
+		receptCap = 10;
+		
+		construct(constructCoinArgs, selButtCount, coinRackCap, popCanRackCap, receptCap);
+
+//		configure("stuff"; 140)
+		configPopNamesArgs.clear();
+		configPopCostArgs.clear();
+		configPopNamesArgs.add("stuff");
+		
+		configPopCostArgs.add(140);
+		
+		configure(configPopNamesArgs, configPopCostArgs);
+		
+//		load(1, 6, 1, 1; 1)
+		loadCoinCounts.clear();
+		loadPopCounts.clear();
+		loadCoinCounts.add(1);
+		loadCoinCounts.add(6);
+		loadCoinCounts.add(1);
+		loadCoinCounts.add(1);
+		
+		loadPopCounts.add(1);
+		
+		load(loadCoinCounts, loadPopCounts);
+		
+//		insert(100)
+		insert(100);
+		
+//		insert(100)
+		insert(100);
+		
+//		insert(100)
+		insert(100);
+		
+//		press(0)
+		press(0);
+		
+//		extract()
+		extractObjOutput = extract(); 		
+		
+//		CHECK_DELIVERY(160, "stuff")
+		extractExpectedStringOutput.clear();
+		extractActualStringOutput.clear();
+		extractExpectedChangeValue = 160; 	
+		extractExpectedStringOutput.add("stuff");
+		extractTestHelper();	
+		
+		//check if change value is correct
+		assertEquals(extractExpectedChangeValue, extractActualChangeValue);
+		//check if pop names are correct
+		assertArrayEquals(extractExpectedStringOutput.toArray(), extractActualStringOutput.toArray());
+		
+//		unload()
+		vmsc = unload();
+
+//		CHECK_TEARDOWN(330; 0)
+		//checking List<List<Coin>> unusedCoinsForChange 
+		expectedChangeSum = 330;
+		unloadUnusedCoinsHelper();
+		
+		//check if the sum of the unused change is correct
+		assertEquals(expectedChangeSum, actualChangeSum);
+		
+
+		expectedPaymentCoinsInStorageBin = 0;
+		unloadPaymentCoinsInStorageBinHelper();
+
+		//check if the sum of the Coins in the storagebin is correct
+		assertEquals(expectedPaymentCoinsInStorageBin, actualPaymentCoinsInStorageBin);
+		
+		
+		//checking List<List<PopCan>> unsoldPopCans 					
+		expectedUnsoldPopCans.clear();
+		actualUnsoldPopCans.clear();
+		unloadUnsoldPopCansHelper();
+		
+		//check if the unsold PopCans is correct
+		assertArrayEquals(expectedUnsoldPopCans.toArray(), actualUnsoldPopCans.toArray());
 	}
 	
 	@Test
 	public void T10() throws DisabledException {
 		
+//		construct(5, 10, 25, 100; 1; 10; 10; 10)
+		constructCoinArgs.clear();
+		constructCoinArgs.add(5);
+		constructCoinArgs.add(10);
+		constructCoinArgs.add(25);
+		constructCoinArgs.add(100);
 		
+		selButtCount = 1;
+		coinRackCap = 10;
+		popCanRackCap = 10;
+		receptCap = 10;
+		
+		construct(constructCoinArgs, selButtCount, coinRackCap, popCanRackCap, receptCap);
+		
+//		configure("stuff"; 140)
+		configPopNamesArgs.clear();
+		configPopCostArgs.clear();
+		configPopNamesArgs.add("stuff");
+		
+		configPopCostArgs.add(140);
+		
+		configure(configPopNamesArgs, configPopCostArgs);
+		
+//		load(1, 6, 1, 1; 1)
+		loadCoinCounts.clear();
+		loadPopCounts.clear();
+		loadCoinCounts.add(1);
+		loadCoinCounts.add(6);
+		loadCoinCounts.add(1);
+		loadCoinCounts.add(1);
+		
+		loadPopCounts.add(1);
+		
+		load(loadCoinCounts, loadPopCounts);
+		
+//		insert(1)
+		insert(1);
+		
+//		insert(139)
+		insert(139);
+
+//		press(0)
+		press(0);
+		
+//		extract()
+		extractObjOutput = extract(); 		
+		
+//		CHECK_DELIVERY(140)
+		extractExpectedStringOutput.clear();
+		extractActualStringOutput.clear();
+		extractExpectedChangeValue = 140; 	
+		extractTestHelper();	
+		
+		//check if change value is correct
+		assertEquals(extractExpectedChangeValue, extractActualChangeValue);
+		//check if pop names are correct
+		assertArrayEquals(extractExpectedStringOutput.toArray(), extractActualStringOutput.toArray());
+		
+//		unload()
+		vmsc = unload();
+		
+//		CHECK_TEARDOWN(190; 0; "stuff")
+		//checking List<List<Coin>> unusedCoinsForChange 
+		expectedChangeSum = 190;
+		unloadUnusedCoinsHelper();
+		
+		//check if the sum of the unused change is correct
+		assertEquals(expectedChangeSum, actualChangeSum);
+		
+
+		expectedPaymentCoinsInStorageBin = 0;
+		unloadPaymentCoinsInStorageBinHelper();
+
+		//check if the sum of the Coins in the storagebin is correct
+		assertEquals(expectedPaymentCoinsInStorageBin, actualPaymentCoinsInStorageBin);
+		
+		
+		//checking List<List<PopCan>> unsoldPopCans 					
+		expectedUnsoldPopCans.clear();
+		actualUnsoldPopCans.clear();
+		expectedUnsoldPopCans.add("stuff");
+		unloadUnsoldPopCansHelper();
+		
+		//check if the unsold PopCans is correct
+		assertArrayEquals(expectedUnsoldPopCans.toArray(), actualUnsoldPopCans.toArray());
 	}
 	
 	@Test
@@ -948,6 +1218,9 @@ public class Tests {
 
 	//updates values of extractActualChangeValue and extractActualStringOutput for extract method
 	public void extractTestHelper(){
+		extractActualChangeValue = 0;
+		extractActualStringOutput.clear();
+		
 		for (Object obj : extractObjOutput){ 
 			if(obj.getClass().equals(PopCan.class)) 
 				extractActualStringOutput.add(((PopCan) obj).getName());
@@ -958,6 +1231,8 @@ public class Tests {
 	
 	//updates the value of actualChangeSum for unload method
 	public void unloadUnusedCoinsHelper(){
+		actualChangeSum = 0;
+		
 		for (List<Coin> llCoin : vmsc.unusedCoinsForChange){
 			
 			for (Coin c : llCoin){
@@ -968,6 +1243,8 @@ public class Tests {
 
 	//updates the value of actualPaymentCoinsInStorageBin for unload method
 	public void unloadPaymentCoinsInStorageBinHelper(){
+		actualPaymentCoinsInStorageBin = 0;
+		
 		for (Coin c : vmsc.paymentCoinsInStorageBin){
 			actualPaymentCoinsInStorageBin += c.getValue();
 		}
@@ -975,7 +1252,8 @@ public class Tests {
 	
 	//updates the value of actualUnsoldPopCans for unload method 
 	public void unloadUnsoldPopCansHelper(){
-
+		actualUnsoldPopCans.clear();
+		
 		for (List<PopCan> lpc : vmsc.unsoldPopCans){
 			if (lpc.size() > 0){						//TODO: might need to change this to an inner loop to add each pop
 				actualUnsoldPopCans.add(lpc.get(0).getName());		//add first element's name
