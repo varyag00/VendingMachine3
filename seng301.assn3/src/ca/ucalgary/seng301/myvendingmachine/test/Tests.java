@@ -202,15 +202,22 @@ public class Tests {
 		/*	press(0)	*/
 		press(0);
 		
-		/*	extract()	*/									//TODO: not finished, format is [<change value>, <pops>] FIND OUT
+		/*	extract()	*/									//TODO: TURN THIS INTO A FUNCTION, pass args extractObjOutput, extractActualChangeValue, extractActualStringOutput
+		
+		int extractExpectedChangeValue = 0;
+		int extractActualChangeValue = 0;
+		
 		List<Object> extractObjOutput = extract(); 		
-		for (Object obj : extractObjOutput){
-			if(obj.toString() != null)
+		for (Object obj : extractObjOutput){ 
+			if(obj.getClass().equals(PopCan.class)) 
 				extractActualStringOutput.add(((PopCan) obj).getName());
+			else if(obj.getClass().equals(Coin.class))
+				extractActualChangeValue += ((Coin) obj).getValue();
 		}
 
 		/*	CHECK_DELIVERY(0, "Coke")	*/
-		//TODO int return value
+		
+		assertEquals(extractExpectedChangeValue, extractActualChangeValue);
 		
 		extractExpectedStringOutput.add("Coke");
 		assertArrayEquals(extractExpectedStringOutput.toArray(), extractActualStringOutput.toArray());
@@ -219,80 +226,74 @@ public class Tests {
 		vmsc = unload();
 		
 		/*	CHECK_TEARDOWN(315; 0; "water", "stuff")	*/
-		//must check 3 things: 
 		
-		//List<List<Coin>> unusedCoinsForChange 
-		
-		//EXAMPLE: {{25,25,25}, {100,100}}
-		List<List<Integer>> expectedUnusedCoinsForChange = new ArrayList<List<Integer>>();
-		List<List<Integer>> actualUnusedCoinsForChange = new ArrayList<List<Integer>>();
-		
-		//get actual
-//		for (List<Coin> llCoin : vmsc.unusedCoinsForChange){
-//			//create new List<Coin>
-//			List<Integer> temp = new ArrayList<Integer>();
-//			for (Coin c : llCoin){
-//				temp.add(c.getValue());
-//			}
-////			if (temp.size() == 0)
-////				temp.add(0);
-//			
-//			actualUnusedCoinsForChange.add(temp);
-//		}
-//		
-//		//create expected
-//		List<Integer> coinVal = new ArrayList<Integer>();
-//		coinVal.add(315);
-//		expectedUnusedCoinsForChange.add(coinVal);
-//		
-//		//compare lists
-//		List<Integer> actualList;
-//		List<Integer> expectedList;
-//		for (int i = 0; i < actualUnusedCoinsForChange.size(); i++){
-//			actualList = actualUnusedCoinsForChange.get(i);
-//			expectedList = expectedUnusedCoinsForChange.get(i);
-//			assertArrayEquals(expectedList.toArray(), actualList.toArray());
-//		}
-		
-		//have a sum
-		
+		//checking List<List<Coin>> unusedCoinsForChange 
 		int expectedSum = 315;
 		int actualSum = 0;
 		
 		for (List<Coin> llCoin : vmsc.unusedCoinsForChange){
 			
-		for (Coin c : llCoin){
-			actualSum += c.getValue();
+			for (Coin c : llCoin){
+				actualSum += c.getValue();
+			}		
 		}
-		
 		assertEquals(expectedSum, actualSum);
-	}
 		
 		
-		//comparing List<Coin> paymentCoinsInStorageBin
-		List<Integer> expectedPaymentCoinsInStorageBin = new ArrayList<Integer>();
-		List<Integer> actualPaymentCoinsInStorageBin = new ArrayList<Integer>();
+		//checking List<Coin> paymentCoinsInStorageBin				//TODO: TURN THIS INTO A FUNCTION, pass args vmsc, actualPaymentCoinsInStorageBin
+//		List<Integer> expectedPaymentCoinsInStorageBin = new ArrayList<Integer>();
+//		List<Integer> actualPaymentCoinsInStorageBin = new ArrayList<Integer>();
+//		
+//		for (Coin c : vmsc.paymentCoinsInStorageBin){
+//			actualPaymentCoinsInStorageBin.add(c.getValue());
+//		}
+//		if (actualPaymentCoinsInStorageBin.size() == 0){
+//			actualPaymentCoinsInStorageBin.add(0);
+//		}
+//		
+//		expectedPaymentCoinsInStorageBin.add(0);
+//		
+//		assertArrayEquals(expectedPaymentCoinsInStorageBin.toArray(), actualPaymentCoinsInStorageBin.toArray());
+//		
+		int expectedPaymentCoinsInStorageBin = 0;
+		int actualPaymentCoinsInStorageBin = 0;
 		
 		for (Coin c : vmsc.paymentCoinsInStorageBin){
-			actualPaymentCoinsInStorageBin.add(c.getValue());
-		}
-		if (actualPaymentCoinsInStorageBin.size() == 0){
-			actualPaymentCoinsInStorageBin.add(0);
+			actualPaymentCoinsInStorageBin += c.getValue();
 		}
 		
-		expectedPaymentCoinsInStorageBin.add(0);
-		
-		assertArrayEquals(expectedPaymentCoinsInStorageBin.toArray(), actualPaymentCoinsInStorageBin.toArray());
+		assertEquals(expectedPaymentCoinsInStorageBin, actualPaymentCoinsInStorageBin);
 		
 		
 		
-		//List<List<PopCan>> unsoldPopCans
+		//checking List<List<PopCan>> unsoldPopCans 							//TODO: make a method for this
+				
+		ArrayList<String> actualUnsoldPopCans = new ArrayList<String>(); 		//MIGHT NEED TO MAKE THESE INTO List<ArrayList<String>> 
+		ArrayList<String> expectedUnsoldPopCans = new ArrayList<String>();
+		expectedUnsoldPopCans.add("water");
+		expectedUnsoldPopCans.add("stuff");
 		
-		//Ex
-		List<List<PopCan>> expectedUnsoldPopCans;
-		List<List<PopCan>> actualUnsoldPopCans;
-		
-		
+		//len of vmsc.unsoldPopCans
+		int cnt1 = vmsc.unsoldPopCans.size();
+		//len of vmsc.unsoldPopCans.first = coke
+		int cnt2 = vmsc.unsoldPopCans.get(0).size();
+		//len of vmsc.unsoldPopCans.second = waters
+		int cnt3 = vmsc.unsoldPopCans.get(1).size();
+		String temp3 = vmsc.unsoldPopCans.get(1).get(0).getName();
+		//len of vmsc.unsoldPopCans.third = stuff (s)
+		int cnt4 = vmsc.unsoldPopCans.get(2).size();
+		String temp4 = vmsc.unsoldPopCans.get(2).get(0).getName();
+
+		int i = 0;
+		for (List<PopCan> lpc : vmsc.unsoldPopCans){
+			if (lpc.size() > 0){						//TODO: might need to change this to an inner loop to add each pop
+				actualUnsoldPopCans.add(lpc.get(0).getName());		//add first element's name
+			}
+			
+			i++;
+		}
+		//assertEquals(expectedUnsoldPopCans, actualUnsoldPopCans);
+		assertArrayEquals(expectedUnsoldPopCans.toArray(), actualUnsoldPopCans.toArray());
 	}
 
 }
