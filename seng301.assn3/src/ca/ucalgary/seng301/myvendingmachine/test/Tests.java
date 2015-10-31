@@ -2,9 +2,11 @@
  * UCID:	10058656
  * Class:	SENG 301
  * Ass:		3
+ * 
+ * Description: Assignment 2 solution without a VendingMachineFactory and without the entire Parser package, 
+ * as well as including tests corresponding to each one of the ass2 test scripts (minus U01, because it 
+ * doesn't make sense to test hardware that doesn't exist).
  */
-
-//TODO: completely remove the Parser package and the VendingMachineFactory Class
 
 package ca.ucalgary.seng301.myvendingmachine.test;
 
@@ -1764,80 +1766,86 @@ public class Tests {
 		
 	}
 	
-	@Test(expected = NullPointerException.class)
-	public void U01() throws DisabledException{
-		
-//		configure("Coke", "water", "stuff"; 250, 250, 205) // This SHOULD cause an error, but DOES NOT!
-		configPopNamesArgs.clear();
-		configPopCostArgs.clear();
-		configPopNamesArgs.add("Coke");
-		configPopNamesArgs.add("water");
-		configPopNamesArgs.add("stuff");
-		
-		configPopCostArgs.add(250);
-		configPopCostArgs.add(250);
-		configPopCostArgs.add(205);
-		
-		configure(configPopNamesArgs, configPopCostArgs);
-		
-//		construct(5, 10, 25, 100; 3; 10; 10; 10)
-		constructCoinArgs.clear();
-		constructCoinArgs.add(5);
-		constructCoinArgs.add(10);
-		constructCoinArgs.add(25);
-		constructCoinArgs.add(100);
-		
-		selButtCount = 3;
-		coinRackCap = 10;
-		popCanRackCap = 10;
-		receptCap = 10;
-		
-		construct(constructCoinArgs, selButtCount, coinRackCap, popCanRackCap, receptCap);
-		
-//		load(1, 1, 2, 0; 1, 1, 1)
-		loadCoinCounts.clear();
-		loadPopCounts.clear();
-		loadCoinCounts.add(1);
-		loadCoinCounts.add(1);
-		loadCoinCounts.add(2);
-		loadCoinCounts.add(0);
-		
-		loadPopCounts.add(1);
-		loadPopCounts.add(1);
-		loadPopCounts.add(1);
-		
-		load(loadCoinCounts, loadPopCounts);
-		
-//		unload()
-		vmsc = unload();
-
-//		CHECK_TEARDOWN(65; 0; "Coke", "water", "stuff") // This causes an error for the dummy but should not
-		//checking List<List<Coin>> unusedCoinsForChange 
-		expectedChangeSum = 65;
-		unloadUnusedCoinsHelper();
-		
-		//check if the sum of the unused change is correct
-		assertEquals(expectedChangeSum, actualChangeSum);
-		
-
-		expectedPaymentCoinsInStorageBin = 0;
-		unloadPaymentCoinsInStorageBinHelper();
-
-		//check if the sum of the Coins in the storagebin is correct
-		assertEquals(expectedPaymentCoinsInStorageBin, actualPaymentCoinsInStorageBin);
-		
-		
-		//checking List<List<PopCan>> unsoldPopCans 					
-		expectedUnsoldPopCans.clear();
-		actualUnsoldPopCans.clear();
-		expectedUnsoldPopCans.add("Coke");
-		expectedUnsoldPopCans.add("water");
-		expectedUnsoldPopCans.add("stuff");
-		unloadUnsoldPopCansHelper();
-		
-		//check if the unsold PopCans is correct
-		assertArrayEquals(expectedUnsoldPopCans.toArray(), actualUnsoldPopCans.toArray());
-	}
+	/* Because we are testing the hardware directly via the VendingMachine class, the JUnit test U01, 
+	 * which attempts to configure vending machine hardware that before the vending machine has been constructed 
+	 * (i.e. before it exists), I decided to exclude the test U01 as it does not make sense.
+	 * */
+//	@Test(expected = NullPointerException.class)
+//	public void U01() throws DisabledException{
+//		
+////		configure("Coke", "water", "stuff"; 250, 250, 205) // This SHOULD cause an error, but DOES NOT!
+//		configPopNamesArgs.clear();
+//		configPopCostArgs.clear();
+//		configPopNamesArgs.add("Coke");
+//		configPopNamesArgs.add("water");
+//		configPopNamesArgs.add("stuff");
+//		
+//		configPopCostArgs.add(250);
+//		configPopCostArgs.add(250);
+//		configPopCostArgs.add(205);
+//		
+//		configure(configPopNamesArgs, configPopCostArgs);
+//		
+////		construct(5, 10, 25, 100; 3; 10; 10; 10)
+//		constructCoinArgs.clear();
+//		constructCoinArgs.add(5);
+//		constructCoinArgs.add(10);
+//		constructCoinArgs.add(25);
+//		constructCoinArgs.add(100);
+//		
+//		selButtCount = 3;
+//		coinRackCap = 10;
+//		popCanRackCap = 10;
+//		receptCap = 10;
+//		
+//		construct(constructCoinArgs, selButtCount, coinRackCap, popCanRackCap, receptCap);
+//		
+////		load(1, 1, 2, 0; 1, 1, 1)
+//		loadCoinCounts.clear();
+//		loadPopCounts.clear();
+//		loadCoinCounts.add(1);
+//		loadCoinCounts.add(1);
+//		loadCoinCounts.add(2);
+//		loadCoinCounts.add(0);
+//		
+//		loadPopCounts.add(1);
+//		loadPopCounts.add(1);
+//		loadPopCounts.add(1);
+//		
+//		load(loadCoinCounts, loadPopCounts);
+//		
+////		unload()
+//		vmsc = unload();
+//
+////		CHECK_TEARDOWN(65; 0; "Coke", "water", "stuff") // This causes an error for the dummy but should not
+//		//checking List<List<Coin>> unusedCoinsForChange 
+//		expectedChangeSum = 65;
+//		unloadUnusedCoinsHelper();
+//		
+//		//check if the sum of the unused change is correct
+//		assertEquals(expectedChangeSum, actualChangeSum);
+//		
+//
+//		expectedPaymentCoinsInStorageBin = 0;
+//		unloadPaymentCoinsInStorageBinHelper();
+//
+//		//check if the sum of the Coins in the storagebin is correct
+//		assertEquals(expectedPaymentCoinsInStorageBin, actualPaymentCoinsInStorageBin);
+//		
+//		
+//		//checking List<List<PopCan>> unsoldPopCans 					
+//		expectedUnsoldPopCans.clear();
+//		actualUnsoldPopCans.clear();
+//		expectedUnsoldPopCans.add("Coke");
+//		expectedUnsoldPopCans.add("water");
+//		expectedUnsoldPopCans.add("stuff");
+//		unloadUnsoldPopCansHelper();
+//		
+//		//check if the unsold PopCans is correct
+//		assertArrayEquals(expectedUnsoldPopCans.toArray(), actualUnsoldPopCans.toArray());
+//	}
+	
+	
 	
 	@Test(expected = ca.ucalgary.seng301.vendingmachine.hardware.SimulationException.class)
 	public void U02() throws DisabledException{
@@ -2008,9 +2016,7 @@ public class Tests {
 		
 		configure(configPopNamesArgs, configPopCostArgs);
 	}
-	
-	//TODO: remember one of the above should not run
-	
+		
 	/*	Test Helper Methods	*/
 
 	//updates values of extractActualChangeValue and extractActualStringOutput for extract method
@@ -2052,7 +2058,7 @@ public class Tests {
 		actualUnsoldPopCans.clear();
 		
 		for (List<PopCan> lpc : vmsc.unsoldPopCans){
-			if (lpc.size() > 0){						//TODO: might need to change this to an inner loop to add each pop
+			if (lpc.size() > 0){						
 				actualUnsoldPopCans.add(lpc.get(0).getName());		//add first element's name
 			}
 		}
